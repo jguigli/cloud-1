@@ -1,0 +1,95 @@
+version: '3'
+
+#NETWORK
+networks:
+  inception:
+    driver: bridge
+    name: inception
+
+#VOLUME
+volumes:
+  wp:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/wordpress
+  mdb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/mariadb
+  wp_log:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/wordpress_log
+
+#MARIADB
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariadb/
+      dockerfile: Dockerfile
+    image: mariadb
+    container_name: mariadb
+    volumes:
+      - mdb:/var/lib/mysql
+    env_file : .env
+    networks: 
+      - inception
+    restart: always
+
+#WORDPRESS
+  wordpress:
+    build:
+      context: ./requirements/wordpress/
+      dockerfile: Dockerfile 
+    image: wordpress
+    hostname: wordpress
+    container_name: wordpress
+    volumes:
+      - wp:/var/www/wordpress
+      - wp_log:/var/log/
+    depends_on:
+       mariadb:
+         condition: service_healthy
+    env_file : .env
+    networks:
+      - inception
+    restart: always
+
+#NGINX
+  nginx:
+    build:
+      context: ./requirements/nginx/
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    volumes:
+      - wp:/var/www/wordpress
+    ports:      
+      - 443:443 
+    networks:
+      - inception
+    restart: unless-stopped
+
+#PhpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+      - wordpress
+    ports:      
+      - 8080:80
+    env_file : .env
+    networks:
+      - inception
+    restart: always

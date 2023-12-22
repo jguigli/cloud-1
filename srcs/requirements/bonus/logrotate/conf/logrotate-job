@@ -1,0 +1,2 @@
+0 0 * * * logrotate /etc/logrotate.d/logrotate.conf
+*/1 * * * * echo "Tache Cron actif : Lancement de Logrotate tous les jours à minuit" > /dev/pts/0
