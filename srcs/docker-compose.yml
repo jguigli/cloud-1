@@ -27,8 +27,8 @@ volumes:
       o: bind
       device: ~/data/wordpress_log
 
-#MARIADB
 services:
+#MARIADB
   mariadb:
     build:
       context: ./requirements/mariadb/
@@ -57,6 +57,8 @@ services:
        mariadb:
          condition: service_healthy
     env_file : .env
+    # ports:      
+    #   - 8181:9000
     networks:
       - inception
     restart: always
@@ -74,6 +76,7 @@ services:
       - wp:/var/www/wordpress
     ports:      
       - 443:443 
+      - 8080:8080
     networks:
       - inception
     restart: unless-stopped
@@ -82,13 +85,14 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
-    links:
-      - mariadb
+    # links:
+    #   - mariadb
     depends_on:
       - mariadb
       - wordpress
     ports:      
-      - 8080:80
+      - 8080:8080
+      # - 8181:443
     env_file : .env
     networks:
       - inception

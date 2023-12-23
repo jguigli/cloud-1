@@ -18,15 +18,15 @@ wp user create --path=/var/www/wordpress --allow-root $WORDPRESS_USER_LOGIN $WOR
 chmod -R 777 /var/www/wordpress/
 
 #Installation du plugin Redis cache pour Wordpress
-wp config set WP_REDIS_HOST redis --allow-root --path=/var/www/wordpress
-wp config set WP_REDIS_PORT 6379 --raw --allow-root --path=/var/www/wordpress
-wp config set WP_REDIS_CLIENT phpredis --allow-root --path=/var/www/wordpress
-wp config set WP_CACHE_KEY_SALT jguigli.42.fr --allow-root --path=/var/www/wordpress
-wp config set WP_CACHE true --allow-root --path=/var/www/wordpress
-wp config set FS_METHOD direct --allow-root --path=/var/www/wordpress
-wp plugin install redis-cache --activate --path=/var/www/wordpress --allow-root
-wp plugin update --all --allow-root --path=/var/www/wordpress
-wp redis enable --allow-root --path=/var/www/wordpress
+# wp config set WP_REDIS_HOST redis --allow-root --path=/var/www/wordpress
+# wp config set WP_REDIS_PORT 6379 --raw --allow-root --path=/var/www/wordpress
+# wp config set WP_REDIS_CLIENT phpredis --allow-root --path=/var/www/wordpress
+# wp config set WP_CACHE_KEY_SALT jguigli.42.fr --allow-root --path=/var/www/wordpress
+# wp config set WP_CACHE true --allow-root --path=/var/www/wordpress
+# wp config set FS_METHOD direct --allow-root --path=/var/www/wordpress
+# wp plugin install redis-cache --activate --path=/var/www/wordpress --allow-root
+# wp plugin update --all --allow-root --path=/var/www/wordpress
+# wp redis enable --allow-root --path=/var/www/wordpress
 
 mkdir -p /run/php
 
