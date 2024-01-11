@@ -57,8 +57,6 @@ services:
        mariadb:
          condition: service_healthy
     env_file : .env
-    # ports:      
-    #   - 8181:9000
     networks:
       - inception
     restart: always
@@ -72,11 +70,13 @@ services:
     container_name: nginx
     depends_on:
       - wordpress
+      - phpmyadmin
     volumes:
       - wp:/var/www/wordpress
     ports:      
-      - 443:443 
-      - 8080:8080
+      - 443:443
+      # - 80:80
+      # - 8080:8080
     networks:
       - inception
     restart: unless-stopped
@@ -85,8 +85,8 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
-    # links:
-    #   - mariadb
+    links:
+      - mariadb
     depends_on:
       - mariadb
       - wordpress
