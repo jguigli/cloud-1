@@ -25,6 +25,7 @@ RUN mkdir -p /var/run/php \
     && mv wp-cli.phar /usr/local/bin/wp
 
 COPY conf/init.sh init.sh
+COPY conf/wp-config.php /var/www/wordpress/
 RUN	chmod +x init.sh
 
 EXPOSE 9000

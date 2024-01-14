@@ -11,11 +11,14 @@
 #     Exécute enfin le processus PHP-FPM.
 
 wp core download --path=/var/www/wordpress --allow-root --locale=fr_FR
-wp config create --path=/var/www/wordpress --allow-root --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost=mariadb:3306
+# wp config create --path=/var/www/wordpress --allow-root --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost=mariadb:3306
 wp core install --path=/var/www/wordpress --allow-root --url=https://jguigli.42.fr --title="Inception" --admin_user=$WORDPRESS_ADMIN_USER --admin_password=$WORDPRESS_ADMIN_PASS --admin_email=jguigli@42.fr --skip-email
 wp user create --path=/var/www/wordpress --allow-root $WORDPRESS_USER_LOGIN $WORDPRESS_USER_EMAIL --user_pass=$WORDPRESS_USER_PASSWORD
 
+
+chown -R www-data:www-data /var/www/wordpress/
 chmod -R 777 /var/www/wordpress/
+
 
 #Installation du plugin Redis cache pour Wordpress
 # wp config set WP_REDIS_HOST redis --allow-root --path=/var/www/wordpress
