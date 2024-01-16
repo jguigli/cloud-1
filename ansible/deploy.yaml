@@ -1,0 +1,10 @@
+- name: Deploiement CLOUD-1
+  hosts: myhosts
+  tasks:
+    - name: Install Docker and Docker Compose
+      script: install_docker.sh
+
+    - name: Lancer docker-compose
+      command: make
+      args:
+        chdir: /path/to/project
