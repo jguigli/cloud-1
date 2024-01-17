@@ -1,10 +1,18 @@
 - name: Deploiement CLOUD-1
   hosts: myhosts
   tasks:
+    - name: Copy remote file
+      copy:
+        src: /srv/myfiles/foo.conf
+        dest: /etc/foo.conf
+        owner: foo
+        group: foo
+        mode: 0644
+
     - name: Install Docker and Docker Compose
       script: install_docker.sh
 
-    - name: Lancer docker-compose
+    - name: Launch docker-compose
       command: make
       args:
         chdir: /path/to/project
