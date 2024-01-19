@@ -1,19 +1,40 @@
 - name: Deploiement CLOUD-1
   hosts: myhosts
   tasks:
-    - name: Copy remote file
-      copy:
-        src: ~/Documents/42/cloud-1/srcs
-        dest: ~/cloud-1/
-        owner: jguigli
-        group: jguigli
-        mode: 0644
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Check if "make" is already installed
+      ansible.builtin.debug:
+        msg: "'make' is already installed, skipping..."
+      when: "'make' in ansible_facts.packages"
+
+    - name: Install the package "make"
+      become: yes
+      ansible.builtin.apt:
+        name: make
+      when: "'make' not in ansible_facts.packages"
+
+    - name: Check if "docker" is already installed
+      ansible.builtin.debug:
+        msg: "'docker' is already installed, skipping..."
+      when: "'docker.io' in ansible_facts.packages"
 
     - name: Install Docker and Docker Compose
       become: yes
       script: install_docker.sh
+      when: "'docker.io' not in ansible_facts.packages"
+
+    - name: Copy remote file
+      copy:
+        src: ~/cloud-1/srcs
+        dest: ~/cloud-1/
+        owner: ubuntu
+        group: ubuntu
+        mode: 0644
 
     - name: Launch docker-compose
-      shell: make > /tmp/docker-compose.log 2>&1
+      shell: sudo make > /tmp/docker-compose.log 2>&1
       args:
         chdir: ~/cloud-1/srcs
