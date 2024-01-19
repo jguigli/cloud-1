@@ -26,6 +26,12 @@ volumes:
       type: none
       o: bind
       device: ~/data/wordpress_log
+  mdb_cert:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/mariadb_cert
 
 services:
 #MARIADB
@@ -37,6 +43,7 @@ services:
     container_name: mariadb
     volumes:
       - mdb:/var/lib/mysql
+      - mdb_cert:/etc/ssl/
     env_file : .env
     networks: 
       - inception
@@ -68,9 +75,6 @@ services:
       dockerfile: Dockerfile
     image: nginx
     container_name: nginx
-    depends_on:
-      - wordpress
-      - phpmyadmin
     volumes:
       - wp:/var/www/wordpress
     ports:      
@@ -81,13 +85,18 @@ services:
 
 #PhpMyAdmin
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    build:
+      context: ./requirements/phpmyadmin/
+      dockerfile: Dockerfile
+    image: phpmyadmin
     container_name: phpmyadmin
     links:
       - mariadb
     depends_on:
       - mariadb
-      - wordpress
+      - nginx
+    volumes:
+      - mdb_cert:/etc/ssl/
     env_file : .env
     networks:
       - inception

@@ -3,18 +3,19 @@ all:
 	mkdir -p ~/data/wordpress
 	mkdir -p ~/data/mariadb
 	mkdir -p ~/data/wordpress_log
-	docker-compose -f ./srcs/docker-compose.yml up --build -d
+	mkdir -p ~/data/mariadb_cert
+	docker-compose -f ./docker-compose.yml up --build -d
 
 re: clean all
 
 build:
-	docker-compose -f ./srcs/docker-compose.yml build
+	docker-compose -f ./docker-compose.yml build
 
 down:
-	docker-compose -f ./srcs/docker-compose.yml down
+	docker-compose -f ./docker-compose.yml down
 
 run:
-	docker-compose -f ./srcs/docker-compose.yml up
+	docker-compose -f ./docker-compose.yml up
 
 rerun: rebuild run
 
@@ -25,6 +26,7 @@ clean: down
 	docker volume rm -f srcs_mdb
 	docker volume rm -f srcs_wp
 	docker volume rm -f srcs_wp_log
+	docker volume rm -f srcs_mdb_cert
 	docker system prune -a -f
 
 .PHONY: all re build down run rerun rebuild clean

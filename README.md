@@ -18,20 +18,25 @@ Le déploiement de votre application doit être entièrement automatisé. Nous v
 • Vous devez disposer d'un fichier docker-compose.yml.  
 • En cas de redémarrage, toutes les données du site sont persistantes (images, comptes d'utilisateurs, articles, ...).  
 • Vous devrez vous assurer que votre base de données SQL fonctionne avec WordPress et PHPMyAdmin.  
+• Les services seront les différents composants d'un WordPress à installer par vous-même. Par exemple, Phpmyadmin, MySQL...  
+• Pas de de privilege ADMIN sur phpmyadmin  
+• Votre site peut redémarrer automatiquement si le serveur est redémarré.  
 
 
 ## PAS OK :
 • Vous devrez vous assurer que, en fonction de l'URL demandée, votre serveur redirige vers le site correct.  
-• Votre site peut redémarrer automatiquement si le serveur est redémarré.  
 • Il est possible de déployer votre site sur plusieurs serveurs en parallèle.  
 • Le script doit pouvoir fonctionner de manière automatisée avec une seule hypothèse : un système d'exploitation Ubuntu 20.04 LTS tel que celui de l'instance cible exécutant un démon SSH et avec Python installé.  
-• Les services seront les différents composants d'un WordPress à installer par vous-même. Par exemple, Phpmyadmin, MySQL...  
-• Pas de de privilege ADMIN sur phpmyadmin  
+• Verifier que apt-get est bien sur le serveur cloud  
+• Openssl a virer du dockerfile nginx (remplacer par certbot)  
+• Comment on fait pour le .env (a rendre dans le repo ?)
 
 
 # COMMAND TO DEPLOY
 
-	ansible-playbook -i inventory.ini deploy.yml
+	ssh-keygen -f "/home/joel/.ssh/known_hosts" -R "192.168.1.81"
+	ssh-copy-id jguigli@192.168.1.81
+	ansible-playbook -i inventory.ini deploy.yaml --ask-become-pass
 
 # DEPENDANCES
 
@@ -42,3 +47,13 @@ Le déploiement de votre application doit être entièrement automatisé. Nous v
 Verify inventory.ini :
 
 	ansible-inventory -i inventory.ini --list
+
+Renouvellement cert-bot :
+
+	certbot renew
+
+
+# A rajouter pour certif nginx
+
+	; ssl_certificate /etc/letsencrypt/live/jguigli.42.fr/fullchain.pem;  
+	; ssl_certificate_key /etc/letsencrypt/live/jguigli.42.fr/privkey.pem;  
