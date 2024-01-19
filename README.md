@@ -6,6 +6,7 @@
 [ANSIBLE COMMAND LINE TOOLS](https://docs.ansible.com/ansible/latest/command_guide/index.html)  
 [ANSIBLE PLAYBOOK](https://docs.ansible.com/ansible/latest/playbook_guide/index.html)  
 [LETS ENCRYPT TLS](https://letsencrypt.org/fr/)  
+[CERTBOT TUTO](https://howto.wared.fr/ubuntu-certificats-ssl-tls-certbot/)  
 
 # SUJET
 
@@ -18,18 +19,17 @@ Le déploiement de votre application doit être entièrement automatisé. Nous v
 • Vous devez disposer d'un fichier docker-compose.yml.  
 • En cas de redémarrage, toutes les données du site sont persistantes (images, comptes d'utilisateurs, articles, ...).  
 • Vous devrez vous assurer que votre base de données SQL fonctionne avec WordPress et PHPMyAdmin.  
-• Les services seront les différents composants d'un WordPress à installer par vous-même. Par exemple, Phpmyadmin, MySQL...  
-• Pas de de privilege ADMIN sur phpmyadmin  
+• Les services seront les différents composants d'un WordPress à installer par vous-même. Par exemple, Phpmyadmin, MySQL...    
 • Votre site peut redémarrer automatiquement si le serveur est redémarré.  
+• Verifier que apt-get est bien sur le serveur cloud  
+• Le script doit pouvoir fonctionner de manière automatisée avec une seule hypothèse : un système d'exploitation Ubuntu 20.04 LTS tel que celui de l'instance cible exécutant un démon SSH et avec Python installé.  
+• Il est possible de déployer votre site sur plusieurs serveurs en parallèle.  
 
 
 ## PAS OK :
 • Vous devrez vous assurer que, en fonction de l'URL demandée, votre serveur redirige vers le site correct.  
-• Il est possible de déployer votre site sur plusieurs serveurs en parallèle.  
-• Le script doit pouvoir fonctionner de manière automatisée avec une seule hypothèse : un système d'exploitation Ubuntu 20.04 LTS tel que celui de l'instance cible exécutant un démon SSH et avec Python installé.  
-• Verifier que apt-get est bien sur le serveur cloud  
-• Openssl a virer du dockerfile nginx (remplacer par certbot)  
-• Comment on fait pour le .env (a rendre dans le repo ?)
+• Openssl a virer du dockerfile nginx (remplacer par certbot)
+• Creer volume pour certificats cert-bot
 
 
 # COMMAND TO DEPLOY
@@ -51,9 +51,3 @@ Verify inventory.ini :
 Renouvellement cert-bot :
 
 	certbot renew
-
-
-# A rajouter pour certif nginx
-
-	; ssl_certificate /etc/letsencrypt/live/jguigli.42.fr/fullchain.pem;  
-	; ssl_certificate_key /etc/letsencrypt/live/jguigli.42.fr/privkey.pem;  

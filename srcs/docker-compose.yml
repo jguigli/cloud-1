@@ -32,6 +32,12 @@ volumes:
       type: none
       o: bind
       device: ~/data/mariadb_cert
+  ng_cert:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/nginx_cert
 
 services:
 #MARIADB
@@ -77,6 +83,7 @@ services:
     container_name: nginx
     volumes:
       - wp:/var/www/wordpress
+      - ng_cert:/etc/letsencrypt
     ports:      
       - 443:443
     networks:

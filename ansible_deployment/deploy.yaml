@@ -28,10 +28,10 @@
 
     - name: Copy remote file
       copy:
-        src: ~/cloud-1/srcs
+        src: ~/Documents/cloud-1/srcs
         dest: ~/cloud-1/
-        owner: ubuntu
-        group: ubuntu
+        owner: root
+        group: root
         mode: 0644
 
     - name: Launch docker-compose
