@@ -40,4 +40,4 @@ clean: down
 	docker volume rm -f srcs_cert_data
 	docker system prune -a -f
 
-.PHONY: all re build down run rerun rebuild clean
+.PHONY: all re certbot certbot_dry_run certbot_renew build down run rerun rebuild clean

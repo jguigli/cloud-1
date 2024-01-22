@@ -7,13 +7,17 @@
 [ANSIBLE PLAYBOOK](https://docs.ansible.com/ansible/latest/playbook_guide/index.html)  
 [LETS ENCRYPT TLS](https://letsencrypt.org/fr/)  
 [CERTBOT TUTO](https://howto.wared.fr/ubuntu-certificats-ssl-tls-certbot/)  
+[CERTBOT TUTO2](https://mindsers.blog/en/post/https-using-nginx-certbot-docker/)  
 
 # COMMAND TO DEPLOY
 
-In directory /ansible_deployment :
+Configurate the file `inventory.ini` with your cloud IP address.
+Then, in directory /ansible_deployment :
 
 	make ansible
 
-# DEPENDANCiES
+# DEPENDANCIES
+
+On host machine :
 
 	pip3 install --user ansible  
