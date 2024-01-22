@@ -32,12 +32,6 @@ volumes:
       type: none
       o: bind
       device: ~/data/nginx_cert
-  ng_conf:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ~/data/nginx_conf
   cert_data:
     driver: local
     driver_opts:
@@ -91,8 +85,11 @@ services:
       - ng_conf:/etc/nginx/sites-available/
       - ng_cert:/etc/letsencrypt
       - cert_data:/var/www/certbot
-    ports:      
+    ports:
+      - 80:80
       - 443:443
+    depends_on:
+      - certbot
     env_file : .env
     networks:
       - inception
@@ -116,8 +113,6 @@ services:
   certbot:
     container_name: certbot
     image: certbot/certbot:latest
-    depends_on:
-      - nginx
     volumes:
       - ng_cert:/etc/letsencrypt/:rw
       - cert_data:/var/www/certbot/:rw

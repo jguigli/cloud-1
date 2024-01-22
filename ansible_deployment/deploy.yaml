@@ -28,7 +28,7 @@
 
     - name: Copy remote file
       copy:
-        src: ~/Documents/cloud-1/srcs
+        src: ~/Documents/42/cloud-1/srcs
         dest: ~/cloud-1/
         owner: root
         group: root
