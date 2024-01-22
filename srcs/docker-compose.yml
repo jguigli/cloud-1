@@ -26,18 +26,24 @@ volumes:
       type: none
       o: bind
       device: ~/data/wordpress_log
-  mdb_cert:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ~/data/mariadb_cert
   ng_cert:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: ~/data/nginx_cert
+  ng_conf:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/nginx_conf
+  cert_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/certbot_data
 
 services:
 #MARIADB
@@ -49,7 +55,6 @@ services:
     container_name: mariadb
     volumes:
       - mdb:/var/lib/mysql
-      - mdb_cert:/etc/ssl/
     env_file : .env
     networks: 
       - inception
@@ -83,28 +88,36 @@ services:
     container_name: nginx
     volumes:
       - wp:/var/www/wordpress
+      - ng_conf:/etc/nginx/sites-available/
       - ng_cert:/etc/letsencrypt
+      - cert_data:/var/www/certbot
     ports:      
       - 443:443
+    env_file : .env
     networks:
       - inception
     restart: unless-stopped
 
 #PhpMyAdmin
   phpmyadmin:
-    build:
-      context: ./requirements/phpmyadmin/
-      dockerfile: Dockerfile
-    image: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin
     links:
       - mariadb
     depends_on:
       - mariadb
       - nginx
-    volumes:
-      - mdb_cert:/etc/ssl/
     env_file : .env
     networks:
       - inception
     restart: always
+
+#CertBot
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    depends_on:
+      - nginx
+    volumes:
+      - ng_cert:/etc/letsencrypt/:rw
+      - cert_data:/var/www/certbot/:rw

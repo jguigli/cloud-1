@@ -2,8 +2,7 @@ FROM debian:buster
 
 RUN	apt update -y && apt upgrade -y && apt install -y \
 	mariadb-server \
-	procps \
-	openssl
+	procps
 
 # SSL
 # RUN openssl req -x509 -newkey rsa:2048 -sha256 -days 3650 -nodes -keyout /etc/ssl/server-key.pem -out /etc/ssl/server-cert.pem -subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=42/CN=jguigli.42.fr"
@@ -17,10 +16,7 @@ RUN	apt update -y && apt upgrade -y && apt install -y \
 # RUN echo "ssl-key=/etc/ssl/server-key.pem" >> /etc/mysql/my.cnf
 
 # indique qu'une vérification de la santé est en cours d'exécution démarrant après un délai de 5 minutes
-HEALTHCHECK --start-period=5m \
-
-# spécifie la commande à exécuter pour vérifier la santé
-CMD mariadb -e 'SELECT @@datadir;' || exit 1
+HEALTHCHECK --start-period=5m CMD mariadb -e 'SELECT @@datadir;' || exit 1
 
 COPY conf/conf.cnf /etc/mysql/mariadb.conf.d/conf.cnf
 COPY conf/init.sh init.sh
