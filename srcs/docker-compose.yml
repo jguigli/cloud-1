@@ -82,7 +82,6 @@ services:
     container_name: nginx
     volumes:
       - wp:/var/www/wordpress
-      - ng_conf:/etc/nginx/sites-available/
       - ng_cert:/etc/letsencrypt
       - cert_data:/var/www/certbot
     ports:

@@ -38,3 +38,19 @@
       shell: sudo make > /tmp/docker-compose.log 2>&1
       args:
         chdir: ~/cloud-1/srcs
+    
+    - name: Check existence of certificate files
+      hosts: myhosts
+      gather_facts: false
+      tasks:
+        - name: Search for certificate files
+          find:
+            paths: "~/data/nginx_cert/live/guinuy.duckdns.org/"
+            patterns: "fullchain.pem,privkey.pem"
+          register: cert_files
+
+        - name: Run make certbot if files are missing
+          command: "make certbot"
+          when: cert_files.matched == 0
+
+
