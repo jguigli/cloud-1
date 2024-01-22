@@ -11,7 +11,7 @@ all:
 re: clean all
 
 certbot:
-	docker-compose run --rm certbot certonly --webroot -w /var/www/certbot --agree-tos --no-eff-email --dry-run -d jguigli.42.fr -d www.jguigli.42.fr --rsa-key-size 4096
+	docker-compose run --rm certbot certonly --webroot -w /var/www/certbot --agree-tos --no-eff-email --email 'user@guinuy.duckdns.org' --dry-run -d jguigli.42.fr -d www.jguigli.42.fr --rsa-key-size 4096
 
 certbot_renew:
 	docker compose run --rm certbot renew

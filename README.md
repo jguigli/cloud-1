@@ -24,6 +24,7 @@ Le déploiement de votre application doit être entièrement automatisé. Nous v
 • Verifier que apt-get est bien sur le serveur cloud  
 • Le script doit pouvoir fonctionner de manière automatisée avec une seule hypothèse : un système d'exploitation Ubuntu 20.04 LTS tel que celui de l'instance cible exécutant un démon SSH et avec Python installé.  
 • Il est possible de déployer votre site sur plusieurs serveurs en parallèle.  
+• Phpmyadmin deploye sans connection direct aux identifiants wordpress de la DB (+ secure)
 
 
 ## PAS OK :
