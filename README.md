@@ -11,8 +11,8 @@
 
 # COMMAND TO DEPLOY
 
-Configurate the file `inventory.ini` with your cloud IP address.
-Then, in directory /ansible_deployment :
+In directory /ansible_deployment, configurate the file `inventory.ini` with your cloud IP address.
+Then use :
 
 	make ansible
 
