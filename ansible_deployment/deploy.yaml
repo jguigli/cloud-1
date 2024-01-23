@@ -47,6 +47,8 @@
           - "privkey.pem"
       register: cert_files
 
-      - name: Run make certbot if files are missing
-        command: "make certbot"
-        when: cert_files.matched == 0
+    - name: Run make certbot if files are missing
+      shell: make certbot
+      args:
+        chdir: ~/cloud-1/srcs
+      when: cert_files.matched == 0

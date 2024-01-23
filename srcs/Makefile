@@ -11,6 +11,8 @@ re: clean all
 
 certbot:
 	docker-compose run --rm  certbot -v certonly --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d guinuy.duckdns.org
+	sed -i 's/#//' ./requirements/nginx/conf/nginx.conf
+	docker-compose -f ./docker-compose.yml up --build -d
 
 certbot_dry_run:
 	docker-compose run --rm  certbot -v certonly --dry-run --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d guinuy.duckdns.org
