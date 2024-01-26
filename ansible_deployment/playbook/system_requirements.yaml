@@ -28,3 +28,4 @@
     - name: Reboot machine
       become: yes
       ansible.builtin.reboot:
+      when: "'docker.io' not in ansible_facts.packages"
