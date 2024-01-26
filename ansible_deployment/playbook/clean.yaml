@@ -1,0 +1,7 @@
+- name: Clean application
+  hosts: myhosts
+  tasks:
+    - name: Clean 
+      shell: make clean > /tmp/docker-compose.log 2>&1
+      args:
+        chdir: ~/cloud-1/srcs
