@@ -28,7 +28,7 @@
 
     - name: Copy remote file
       copy:
-        src: ~/Documents/cloud-1/srcs
+        src: /home/joel/Documents/42/cloud-1/srcs
         dest: ~/cloud-1/
         owner: root
         group: root
@@ -39,16 +39,7 @@
       args:
         chdir: ~/cloud-1/srcs
 
-    - name: Search for certificate files
-      find:
-        paths: "~/data/nginx_cert/live/guinuy.duckdns.org/"
-        patterns:
-          - "fullchain.pem"
-          - "privkey.pem"
-      register: cert_files
-
-    - name: Run make certbot if files are missing
+    - name: Launch Certbot
       shell: make certbot
       args:
         chdir: ~/cloud-1/srcs
-      when: cert_files.matched == 0

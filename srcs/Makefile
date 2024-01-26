@@ -1,3 +1,6 @@
+FILE1 = ~/data/nginx_cert/live/$(DOMAIN_NAME)/fullchain.pem
+FILE2 = ~/data/nginx_cert/live/$(DOMAIN_NAME)/privkey.pem
+
 all:
 	mkdir -p ~/data
 	mkdir -p ~/data/wordpress
@@ -10,12 +13,10 @@ all:
 re: clean all
 
 certbot:
-	docker-compose run --rm  certbot -v certonly --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d guinuy.duckdns.org
-	sed -i 's/#//' ./requirements/nginx/conf/nginx.conf
-	docker-compose -f ./docker-compose.yml up --build -d
+	sh ./requirements/certif.sh
 
 certbot_dry_run:
-	docker-compose run --rm  certbot -v certonly --dry-run --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d guinuy.duckdns.org
+	docker-compose run --rm  certbot -v certonly --dry-run --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d $(DOMAIN_NAME)
 
 certbot_renew:
 	docker compose run --rm certbot renew
