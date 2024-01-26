@@ -8,27 +8,27 @@ all:
 	mkdir -p ~/data/wordpress_log
 	mkdir -p ~/data/nginx_cert
 	mkdir -p ~/data/certbot_data
-	docker-compose -f ./docker-compose.yml up --build -d
+	docker compose -f ./docker-compose.yml up --build -d
 
 re: clean all
 
 certbot:
-	sh ./requirements/certif.sh
+	sh ./certif.sh
 
 certbot_dry_run:
-	docker-compose run --rm  certbot -v certonly --dry-run --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d $(DOMAIN_NAME)
+	docker compose run --rm  certbot -v certonly --dry-run --register-unsafely-without-email --agree-tos --webroot --webroot-path /var/www/certbot/ -d $(DOMAIN_NAME)
 
 certbot_renew:
 	docker compose run --rm certbot renew
 
 build:
-	docker-compose -f ./docker-compose.yml build
+	docker compose -f ./docker-compose.yml build
 
 down:
-	docker-compose -f ./docker-compose.yml down
+	docker compose -f ./docker-compose.yml down
 
 run:
-	docker-compose -f ./docker-compose.yml up
+	docker compose -f ./docker-compose.yml up
 
 rerun: rebuild run
 

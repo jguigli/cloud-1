@@ -1,0 +1,9 @@
+- name: Launch Cerbot
+  hosts: myhosts
+  tasks:
+    - name: Launch Certbot
+      shell: make certbot
+      args:
+        chdir: ~/cloud-1/srcs
+      environment:
+        DOMAIN_NAME: "{{ env }}"

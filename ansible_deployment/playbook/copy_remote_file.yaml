@@ -1,0 +1,10 @@
+- name: Copy file to remote
+  hosts: myhosts
+  tasks:
+    - name: Copy file
+      copy:
+        src: ../../srcs
+        dest: ~/cloud-1/
+        owner: ubuntu
+        group: ubuntu
+        mode: 0644

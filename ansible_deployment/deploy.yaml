@@ -1,45 +1,17 @@
 - name: Deploiement CLOUD-1
   hosts: myhosts
   tasks:
-    - name: Gather the package facts
-      ansible.builtin.package_facts:
-        manager: auto
+    - ansible.builtin.debug:
+        msg: "DOMAIN_NAME: {{ env }}"
 
-    - name: Check if "make" is already installed
-      ansible.builtin.debug:
-        msg: "'make' is already installed, skipping..."
-      when: "'make' in ansible_facts.packages"
+- name: Check system requirements
+  ansible.builtin.import_playbook: playbook/system_requirements.yaml
 
-    - name: Install the package "make"
-      become: yes
-      ansible.builtin.apt:
-        name: make
-      when: "'make' not in ansible_facts.packages"
+- name: Copy file to remote
+  ansible.builtin.import_playbook: playbook/copy_remote_file.yaml
 
-    - name: Check if "docker" is already installed
-      ansible.builtin.debug:
-        msg: "'docker' is already installed, skipping..."
-      when: "'docker.io' in ansible_facts.packages"
+- name: Launch application
+  ansible.builtin.import_playbook: playbook/launch_app.yaml
 
-    - name: Install Docker and Docker Compose
-      become: yes
-      script: install_docker.sh
-      when: "'docker.io' not in ansible_facts.packages"
-
-    - name: Copy remote file
-      copy:
-        src: /home/joel/Documents/42/cloud-1/srcs
-        dest: ~/cloud-1/
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: Launch docker-compose
-      shell: sudo make > /tmp/docker-compose.log 2>&1
-      args:
-        chdir: ~/cloud-1/srcs
-
-    - name: Launch Certbot
-      shell: make certbot
-      args:
-        chdir: ~/cloud-1/srcs
+- name: Launch Certbot
+  ansible.builtin.import_playbook: playbook/certbot.yaml

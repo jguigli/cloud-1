@@ -1,0 +1,7 @@
+- name: Launch application
+  hosts: myhosts
+  tasks:
+    - name: Launch docker compose
+      shell: make > /tmp/docker-compose.log 2>&1
+      args:
+        chdir: ~/cloud-1/srcs
