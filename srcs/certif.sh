@@ -1,6 +1,12 @@
 #!/bin/bash
 
-if [ ! -e "~/data/nginx_cert/live/$DOMAIN_NAME/fullchain.pem" ] && [ ! -e "~/data/nginx_cert/live/$DOMAIN_NAME/privkey.pem" ]; then
+CERT_PATH="/etc/letsencrypt/live/$DOMAIN_NAME"
+# FULLCHAIN_PATH="$CERT_PATH/fullchain.pem"
+# PRIVKEY_PATH="$CERT_PATH/privkey.pem"
+
+docker exec nginx ls "$CERT_PATH" > /dev/null 2>&1
+
+if [ $? -ne 0 ]; then
     echo "Fullchain and privkey not found"
 	while true; do
 		if [ "$(docker inspect --format '{{.State.Status}}' "nginx" 2>/dev/null)" = "running" ]; then
@@ -15,4 +21,6 @@ if [ ! -e "~/data/nginx_cert/live/$DOMAIN_NAME/fullchain.pem" ] && [ ! -e "~/dat
 	done
 else
     echo "Fullchain and privkey found. No need to create new certificates."
+    sed -i 's/#//' ./requirements/nginx/conf/nginx.conf
+    docker compose -f ./docker-compose.yml up --build -d
 fi
