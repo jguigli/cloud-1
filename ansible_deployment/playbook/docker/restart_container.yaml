@@ -1,0 +1,9 @@
+- name: Restart container
+  hosts: myhosts
+  vars_prompt:
+    - name: container_name
+      prompt: Name of the container to be restarted
+      private: false
+  tasks:
+    - name: Restarting "{{ container_name }}"
+      ansible.builtin.command: docker restart "{{ container_name }}"
