@@ -1,0 +1,18 @@
+- name: Get info on container "{{ container }}"
+  community.docker.docker_container_info:
+    name: "{{ container }}"
+  register: container_info
+
+# - name: Does container exist?
+#   ansible.builtin.debug:
+#     msg: "The container {{ 'exists' if container_info.exists else 'does not exist' }}"
+
+- name: Get "{{ container }}" status
+  ansible.builtin.set_fact:
+      container_status: "{{ container }} is {{ container_info.container['State']['Status'] }}"
+  when: container_info.exists
+
+- name: Add "{{ container }}" status to results
+  ansible.builtin.set_fact:
+      containers_status: "{{ containers_status + [container_status] }}"
+  when: container_info.exists

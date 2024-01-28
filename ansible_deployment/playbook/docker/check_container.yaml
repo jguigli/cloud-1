@@ -1,0 +1,22 @@
+- name: Check containers
+  hosts: myhosts
+  vars:
+    containers:
+      - nginx
+      - wordpress
+      - mariadb
+      - phpmyadmin
+    containers_status: []
+  tasks:
+    - ansible.builtin.debug:
+        msg: "Container name: {{ containers }}"
+
+    - name: Get containers status
+      include_tasks: "get_status.yaml"
+      loop: "{{ containers }}"
+      loop_control:
+        loop_var: container
+
+    - name: Print containers status
+      ansible.builtin.debug:
+        msg: "{{ containers_status }}"

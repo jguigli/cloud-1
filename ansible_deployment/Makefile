@@ -10,7 +10,10 @@ launch_app:
 certbot:
 	ansible-playbook -i inventory.ini playbook/certbot.yaml -e="env=$(DOMAIN_NAME)"
 
+check_container:
+	ansible-playbook -i inventory.ini playbook/docker/check_container.yaml
+
 clean:
 	ansible-playbook -i inventory.ini playbook/clean.yaml
 
-.PHONY: all copy_file launch_app certbot
+.PHONY: all copy_file launch_app certbot check_container clean
